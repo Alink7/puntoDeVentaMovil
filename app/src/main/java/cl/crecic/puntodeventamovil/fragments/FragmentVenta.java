@@ -1,8 +1,10 @@
 package cl.crecic.puntodeventamovil.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +47,7 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
 
     //Variables
     private String strSubtotal, StrIva, strTotal;
+    private int cantidadProducto;
 
     @Nullable
     @Override
@@ -53,6 +57,10 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
 
         txtCliente = (AutoCompleteTextView)view.findViewById(R.id.txtCliente);
         txtBusquedaProducto = (AutoCompleteTextView)view.findViewById(R.id.txtBusquedaProducto);
+        txtCliente.setOnClickListener(this);
+        txtCliente.setFocusable(false);
+        txtBusquedaProducto.setFocusable(false);
+        txtBusquedaProducto.setOnClickListener(this);
 
         txtSubtotal = (TextView)view.findViewById(R.id.txtSubtotalValorBottom);
         txtIva = (TextView)view.findViewById(R.id.txtIvaValorBottom);
@@ -82,12 +90,19 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
         listaProductos = new ArrayList<>();
     }
 
+    /**
+     * Carga los clientes desde la base de datos y los carga en el adapter
+     */
     public void cargarClientes(){
         String[] clientes = {"cliente1", "cliente2", "cliente3", "cliente4", "cliente5"};
         clientesAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, clientes);
         txtCliente.setAdapter(clientesAdapter);
     }
 
+    /**
+     * Carga los productos desde el HashMap de productos en el
+     * adapter del editText
+     */
     public void cargarProductos(){
         //lista maestra de productos en bodega
         listaMaestra = cargarListaMaestra();
@@ -103,6 +118,10 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
         txtBusquedaProducto.setAdapter(productosAdapter);
     }
 
+    /**
+     * Carga los productos desde la base de datos en un HashMap
+     * @return HashMap con los productos
+     */
     public HashMap<String, Producto> cargarListaMaestra(){
         HashMap<String, Producto> listaMaestra = new HashMap<>();
 
@@ -118,15 +137,9 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
 
     //acciones de botones
     public void addItem(View v){
-        String producto = txtBusquedaProducto.getText().toString();
-        txtBusquedaProducto.setText("");
 
         //preguntar por cantidad
-
-
-        //limpiar fragmento
-        cargarFragmento(new Producto("", "", "", "", 0));
-        pedidoAdapter.addItem(listaMaestra.get(producto));
+        mostrarDialogoCantidad();
     }
 
     public void asignarCliente(View v){
@@ -194,6 +207,10 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
         return false;
     }
 
+    /**
+     * Carga el fragmento, cuando es una vista en tablet, para ver los detalles del producto
+     * @param producto
+     */
     public void cargarFragmento(Producto producto){
         Bundle argumentos = new Bundle();
         argumentos.putParcelable("PRODUCTO", producto);
@@ -204,7 +221,40 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
                 .commit();
     }
 
-    //Asigna la funcionalidad a cada boton
+    /**
+     * Muestra un dialogo para el ingreso de la cantidad del producto
+     */
+    protected void mostrarDialogoCantidad(){
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        View view = layoutInflater.inflate(R.layout.dialog_cantidad, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setView(view);
+
+        final EditText et_cantidad_producto = (EditText) view.findViewById(R.id.et_cantidad_producto);
+
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cantidadProducto = Integer.parseInt(et_cantidad_producto.getText().toString());
+
+                        String producto = txtBusquedaProducto.getText().toString();
+                        txtBusquedaProducto.setText("");
+
+                        //limpiar fragmento
+                        cargarFragmento(new Producto("", "", "", "", 0));
+
+                        //añadir elemento
+                        pedidoAdapter.addItem(listaMaestra.get(producto), cantidadProducto);
+                    }
+                });
+
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    //Asigna la funcionalidad a cada elemento de la vista
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -217,6 +267,12 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
                 break;
             case R.id.btn_realizar_pedido:
                 realizarPedido(v);
+                break;
+            case R.id.txtCliente:
+                txtCliente.setFocusableInTouchMode(true);
+                break;
+            case R.id.txtBusquedaProducto:
+                txtBusquedaProducto.setFocusableInTouchMode(true);
                 break;
         }
     }

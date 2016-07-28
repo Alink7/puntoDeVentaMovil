@@ -9,7 +9,7 @@ import android.os.Parcelable;
 public class Producto implements Parcelable {
 
     private String codigo, nombre, precio, descripcion;
-    private int imagen;
+    private int imagen, cantidad;
 
     public Producto(String codigo, String nombre, String precio, String descripcion, int imagen) {
         this.codigo = codigo;
@@ -25,6 +25,7 @@ public class Producto implements Parcelable {
         precio = in.readString();
         descripcion = in.readString();
         imagen = in.readInt();
+        cantidad = in.readInt();
     }
 
     @Override
@@ -34,6 +35,7 @@ public class Producto implements Parcelable {
         dest.writeString(precio);
         dest.writeString(descripcion);
         dest.writeInt(imagen);
+        dest.writeInt(cantidad);
     }
 
     @Override
@@ -91,5 +93,13 @@ public class Producto implements Parcelable {
 
     public void setImagen(int imagen) {
         this.imagen = imagen;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }

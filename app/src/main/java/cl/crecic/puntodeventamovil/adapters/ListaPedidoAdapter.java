@@ -73,7 +73,8 @@ public class ListaPedidoAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
-        String nombreProducto = ((Producto)getGroup(groupPosition)).getNombre();
+        Producto producto = (Producto) getGroup(groupPosition);
+        String nombreProducto = producto.getNombre();
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.pedido_item, null);
@@ -83,7 +84,7 @@ public class ListaPedidoAdapter extends BaseExpandableListAdapter {
         final TextView cantidad = (TextView) convertView.findViewById(R.id.cantidad_producto);
 
         //Botones para manejar la cantidad
-        Button btn_menos = (Button) convertView.findViewById(R.id.menos_cantidad);
+        /*Button btn_menos = (Button) convertView.findViewById(R.id.menos_cantidad);
         Button btn_mas = (Button) convertView.findViewById(R.id.mas_cantidad);
         btn_menos.setFocusable(false);
         btn_mas.setFocusable(false);
@@ -105,7 +106,9 @@ public class ListaPedidoAdapter extends BaseExpandableListAdapter {
                 if(v.getId() == R.id.mas_cantidad)
                     cantidad.setText("" + (Integer.parseInt(cantidad.getText().toString()) + 1));
             }
-        });
+        });*/
+
+        cantidad.setText("" + producto.getCantidad());
 
         //Boton para eliminar item de la lista
         final ImageButton eliminar_producto = (ImageButton) convertView.findViewById(R.id.eliminar_producto);
@@ -152,23 +155,41 @@ public class ListaPedidoAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    /**
+     * Elimina un producto de la lista expandible
+     * @param groupPosition la posicion del produco en la lista que se va a eliminar
+     * @return
+     */
     public boolean removeGroup(int groupPosition){
         String precio = "-"+productos.get(groupPosition).getPrecio();
-        actualizarValores(precio);
+        actualizarValores(precio, productos.get(groupPosition).getCantidad());
         productos.remove(groupPosition);
         notifyDataSetChanged();
         return true;
     }
 
-    public void addItem(Producto groupTitle){
+
+    /**
+     * Añade un producto a la lista expandible
+     * @param groupTitle el objeto Producto a añadir
+     * @param cantidad la cantidad del producto
+     */
+    public void addItem(Producto groupTitle, int cantidad){
+
+        groupTitle.setCantidad(cantidad);
         productos.add(0, groupTitle);
-        actualizarValores(groupTitle.getPrecio());
+        actualizarValores(groupTitle.getPrecio(), groupTitle.getCantidad());
         notifyDataSetChanged();
     }
 
-    private void actualizarValores(String nuevoValor){
+    /**
+     * Actualiza los valores del pedido
+     * @param nuevoValor el nuevo valor a sumar o restar, es un String, si es resta viene con un -
+     * @param cantidad la cantidad del producto
+     */
+    private void actualizarValores(String nuevoValor, int cantidad){
 
-        int precio = Integer.parseInt(nuevoValor);
+        int precio = Integer.parseInt(nuevoValor) * cantidad;
         int vSub = Integer.parseInt(subtotal.getText().toString()) + precio;
         int vTotal = Integer.parseInt(subtotal.getText().toString()) + precio;
         int vIva = (int)(vTotal*0.19);
@@ -178,6 +199,11 @@ public class ListaPedidoAdapter extends BaseExpandableListAdapter {
         iva.setText(""+vIva);
     }
 
+
+    /**
+     * Lanza un dialogo para confirmar la eliminacion de un producto de la lista
+     * @param groupPosition la posicion del producto en la lista
+     */
     public void eliminarItemLista(final int groupPosition){
 
         AlertDialog.Builder  builder = new AlertDialog.Builder(context);

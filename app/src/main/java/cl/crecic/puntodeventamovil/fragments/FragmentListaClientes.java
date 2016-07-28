@@ -7,15 +7,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.crecic.puntodeventamovil.ClienteDetalleActivity;
+import cl.crecic.puntodeventamovil.ClienteNuevoActivity;
 import cl.crecic.puntodeventamovil.R;
 import cl.crecic.puntodeventamovil.models.Cliente;
 
@@ -41,9 +47,35 @@ public class FragmentListaClientes extends Fragment {
         if (view.findViewById(R.id.cliente_detail_container) != null)
             mTwoPane = true;
 
+        setHasOptionsMenu(true);
+
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_clientes, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.ic_nuevo_usuario:
+                Intent i = new Intent(getContext(), ClienteNuevoActivity.class);
+                startActivity(i);
+                return true;
+        }
+
+        return true;
+    }
+
+    /**
+     * Carga los clientes desde la base de datos
+     * los guarda en una lista para mostrarlo en la vista.
+     */
     public void cargarClientes(){
         clientes = new ArrayList<>();
         clientes.add(new Cliente("cliente1", "11222333-5", "12345678", "cliente1@gmail.com", "Direccion 1", 10, 0));

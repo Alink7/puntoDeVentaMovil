@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import cl.crecic.puntodeventamovil.fragments.FragmentHistorial;
 import cl.crecic.puntodeventamovil.fragments.FragmentListaClientes;
 import cl.crecic.puntodeventamovil.fragments.FragmentVenta;
 
@@ -106,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.commit();
                 break;
 
+            case 2:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                FragmentHistorial fragmentHistorial = new FragmentHistorial();
+                fragmentTransaction.replace(R.id.fragment, fragmentHistorial);
+                fragmentTransaction.commit();
+                break;
         }
 
     }

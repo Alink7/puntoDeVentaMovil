@@ -11,18 +11,20 @@ import android.view.MenuItem;
 
 import cl.crecic.puntodeventamovil.fragments.FragmentDetalleCliente;
 import cl.crecic.puntodeventamovil.fragments.FragmentListaClientes;
+import cl.crecic.puntodeventamovil.fragments.FragmentNuevoCliente;
 
 /**
  * Created by Nicolas on 28-07-16.
  */
-public class ClienteDetalleActivity extends AppCompatActivity {
+public class ClienteNuevoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.cliente_detail_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        setContentView(R.layout.activity_nuevo_cliente);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.nuevo_cliente_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -32,13 +34,16 @@ public class ClienteDetalleActivity extends AppCompatActivity {
         if (savedInstanceState == null){
             //carga el fragmento de detalles y lo añade a la actividad
             Bundle argumentos = new Bundle();
-            argumentos.putParcelable(FragmentDetalleCliente.ARG_ITEM_ID,
-                    getIntent().getParcelableExtra(FragmentDetalleCliente.ARG_ITEM_ID));
 
-            FragmentDetalleCliente fragment = new FragmentDetalleCliente();
+            if (getIntent().getExtras() != null) {
+                argumentos.putParcelable("EDITAR_CLIENTE",
+                        getIntent().getParcelableExtra("EDITAR_CLIENTE"));
+            }
+
+            FragmentNuevoCliente fragment = new FragmentNuevoCliente();
             fragment.setArguments(argumentos);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.cliente_detail_container, fragment)
+                    .add(R.id.nuevo_cliente_container, fragment)
                     .commit();
         }
     }
@@ -49,6 +54,7 @@ public class ClienteDetalleActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home){
+
             NavUtils.navigateUpTo(this, new Intent(this, FragmentListaClientes.class));
             return true;
         }

@@ -16,4 +16,5 @@
     <string name="texto_prueba"></string>
     <string name="title_cliente_list">Ruta de clientes</string>
     <string name="title_cliente_detail">Detalle cliente</string>
+    <string name="txt_buscar_historial">Seleccionar fecha:</string>
 </resources>
