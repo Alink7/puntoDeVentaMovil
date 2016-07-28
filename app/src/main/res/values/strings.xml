@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Punto de venta móvil</string>
+    <string name="txt_cliente">Cliente:</string>
+    <string name="btn_asignar">Asignar</string>
+    <string name="txt_busqueda">Búsqueda de productos por nombre:</string>
+    <string name="btn_aniadir">Añadir</string>
+    <string name="btn_pedido">Realizar Pedido</string>
+    <string name="txt_subtotal">Subtotal</string>
+    <string name="txt_total">Total</string>
+    <string name="txt_iva">IVA</string>
+    <string name="txt_cantidad">Cantidad:</string>
+    <string name="txt_nombre">Nombre:</string>
+    <string name="txt_precio">Precio:</string>
+    <string name="txt_descripcion">Descripción:</string>
+    <string name="dialog_eliminar_item_title">¿Desea eliminar el producto del pedido?</string>
+    <string name="texto_prueba"></string>
+    <string name="title_cliente_list">Ruta de clientes</string>
+    <string name="title_cliente_detail">Detalle cliente</string>
+</resources>

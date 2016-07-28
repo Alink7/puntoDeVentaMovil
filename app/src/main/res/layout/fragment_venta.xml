@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="270dp"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/txtCliente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/txt_cliente"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+        <Button
+            android:id="@+id/btn_asignar_cliente"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_asignar"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/linear1"
+        android:padding="2dp"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="270dp"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/txtBusquedaProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/txt_busqueda"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <Button
+            android:id="@+id/btn_aniadir_producto"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_aniadir"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear3"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear2"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:visibility="gone"
+            android:id="@+id/fragment_detalle_producto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- <ScrollView
+         android:layout_width="match_parent"
+         android:layout_height="290dp"
+         android:layout_below="@id/linear2"
+         > -->
+
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listaProductosPedido"
+        android:layout_below="@id/linear2"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
+        android:layout_above="@+id/valores_venta"
+        >
+    </ExpandableListView>
+
+    <!-- </ScrollView> -->
+
+    <RelativeLayout
+        android:id="@+id/valores_venta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bottom_widget"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linear_bottom1"
+            >
+
+            <TextView
+                android:id="@+id/txtSubtotalValorBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bottom_text"
+                android:text="0"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/txtSubtotalBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bottom_text"
+                android:text="@string/txt_subtotal"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linear_bottom2"
+            android:layout_toRightOf="@id/linear_bottom1"
+            android:layout_marginLeft="15dp"
+            >
+
+            <TextView
+                android:id="@+id/txtIvaValorBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bottom_text"
+                android:text="0"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/txtIvaBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bottom_text"
+                android:text="@string/txt_iva"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linear_bottom3"
+            android:layout_toRightOf="@id/linear_bottom2"
+            android:layout_marginLeft="15dp"
+            >
+            <TextView
+                android:id="@+id/txtTotalValorBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bottom_text"
+                android:text="0"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/txtTotalBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bottom_text"
+                android:text="@string/txt_total"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_realizar_pedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bottom_btn"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/bottom_text"
+            android:text="@string/btn_pedido"
+            android:padding="2dp"
+            />
+    </RelativeLayout>
+</RelativeLayout>

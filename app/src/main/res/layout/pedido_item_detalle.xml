@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:id="@+id/detalle_nombre_producto_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_nombre"
+        android:textSize="21sp"
+        />
+
+    <TextView
+        android:id="@+id/detalle_precio_producto_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_precio"
+        android:textSize="21sp"
+        android:layout_toRightOf="@id/detalle_nombre_producto_label"
+        android:layout_marginLeft="40dp"
+        />
+
+    <TextView
+        android:id="@+id/detalle_precio_producto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="21sp"
+        android:layout_toRightOf="@id/detalle_precio_producto_label"
+        android:text="1500"
+
+        />
+
+    <ImageView
+        android:id="@+id/imagen_producto_lista"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        />
+
+    <TextView
+        android:id="@+id/detalle_descripcion_producto_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_descripcion"
+        android:textSize="21sp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/detalle_nombre_producto_label"
+        />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detalle_descripcion_producto_label"
+        android:layout_toLeftOf="@+id/imagen_producto_lista"
+        android:layout_toStartOf="@+id/imagen_producto_lista"
+        >
+        <TextView
+            android:id="@+id/detalle_descripcion_producto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp" />
+    </ScrollView>
+</RelativeLayout>
