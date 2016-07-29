@@ -181,7 +181,11 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
         }
 
         //validar lista
-
+        if (pedidoAdapter.getGroupCount() == 0){
+            txtBusquedaProducto.setError("La lista de productos está vacía");
+            focus = txtBusquedaProducto;
+            cancelar = true;
+        }
 
         //si hay algun error de validacion
         if (cancelar){
@@ -196,8 +200,19 @@ public class FragmentVenta extends Fragment implements View.OnClickListener{
             for (int i = 0; i < size; i++)
                 productosEnPedido.add((Producto) pedidoAdapter.getGroup(i));
 
+            //guardar lista del pedido en la base de datos
+            guardarPedido(productosEnPedido);
 
         }
+    }
+
+    /**
+     * Guarda la lista de productos en la base de datos
+     * @param productos la lista de los productos en el pedido
+     */
+    public void guardarPedido(List<Producto> productos) {
+
+
     }
 
     //Valida el campo de texto del cliente

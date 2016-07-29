@@ -12,18 +12,35 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import cl.crecic.puntodeventamovil.R;
-import cl.crecic.puntodeventamovil.models.Producto;
+import cl.crecic.puntodeventamovil.adapters.ListaHistorialAdapter;
+import cl.crecic.puntodeventamovil.models.Cliente;
+import cl.crecic.puntodeventamovil.models.Pedido;
 
 /**
  * Created by Nicolas on 28-07-16.
  */
 public class FragmentHistorial extends Fragment implements View.OnClickListener{
 
-    //elementos de la vista
+    //Elementos de la vista
     private Button btnCalendario;
     private EditText etFechaHistorial;
+    private ListView lvHistorialPedido;
+
+    //Estructura de datos
+    private List<Pedido> pedidos;
+    private List<Pedido> pedidosPrueba;
+
+    //Adapter para la lista
+    private ListaHistorialAdapter historialAdapter;
 
     @Nullable
     @Override
@@ -35,6 +52,17 @@ public class FragmentHistorial extends Fragment implements View.OnClickListener{
         etFechaHistorial.setInputType(InputType.TYPE_NULL);
         btnCalendario = (Button) view.findViewById(R.id.btn_buscar_historial);
         btnCalendario.setOnClickListener(this);
+
+        lvHistorialPedido = (ListView) view.findViewById(R.id.lv_historial_pedido);
+
+        iniciarPedidosPrueba();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy");
+
+
+        pedidos = buscarPedidos(simpleDateFormat.format(calendar.getTime()));
+        historialAdapter = new ListaHistorialAdapter(getContext(), pedidos);
+        lvHistorialPedido.setAdapter(historialAdapter);
 
         return view;
     }
@@ -80,8 +108,44 @@ public class FragmentHistorial extends Fragment implements View.OnClickListener{
      * pasa por parametro
      * @param fecha la fecha de inicio d la busqueda en formato dd/mm/aaaa
      */
-    public void buscarPedidos(String fecha){
+    public List<Pedido> buscarPedidos(String fecha){
 
+        List<Pedido> pedidos = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+
+        //buscar en la base de datos
+        for(Pedido p : pedidosPrueba){
+            System.out.println("Fecha a buscar: " + fecha + " - Fecha del pedido: " + p.getFechaStr());
+            if (p.getFechaStr().equalsIgnoreCase(fecha)){
+                pedidos.add(p);
+            }
+        }
+
+        return pedidos;
+    }
+
+
+    public void iniciarPedidosPrueba(){
+        pedidosPrueba = new ArrayList<>();
+
+        Cliente cliente = new Cliente("cliente", "11222333-5", "12345678", "", "", 2, 0);
+        Cliente cliente1 = new Cliente("cliente1", "11222333-5", "12345678", "", "", 2, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2016, 7, 29);
+
+        pedidosPrueba.add(new Pedido(calendar, cliente));
+        pedidosPrueba.add(new Pedido(calendar, cliente1));
+        pedidosPrueba.add(new Pedido(calendar, cliente));
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(2016, 4, 29);
+        pedidosPrueba.add(new Pedido(calendar1, cliente1));
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(2016, 5, 29);
+        pedidosPrueba.add(new Pedido(calendar2, cliente));
+        pedidosPrueba.add(new Pedido(calendar2, cliente1));
     }
 
     @Override
@@ -93,10 +157,10 @@ public class FragmentHistorial extends Fragment implements View.OnClickListener{
                 mostrarDialogCalendario();
                 break;
             case R.id.btn_buscar_historial:
-                buscarPedidos(etFechaHistorial.getText().toString());
+                pedidos = buscarPedidos(etFechaHistorial.getText().toString());
+                historialAdapter = new ListaHistorialAdapter(getContext(), pedidos);
+                lvHistorialPedido.setAdapter(historialAdapter);
                 break;
         }
     }
-
-
 }
