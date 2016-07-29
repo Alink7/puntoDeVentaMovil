@@ -92,6 +92,8 @@
             android:id="@+id/btn_nuevo_editar_cliente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/boton"
+            android:textColor="#fff"
             android:layout_gravity="right"
             android:text="Crear"
             />
